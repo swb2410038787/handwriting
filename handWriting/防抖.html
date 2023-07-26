@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn">防抖</button>
+</body>
+<script>
+  // 获取id对应的元素
+  const btn = document.getElementById('btn')
+  function click(e) {
+    console.log(e)
+    console.log(this)
+  }
+  // 防抖函数
+  function fan(fun, times, isNow) {
+    if (typeof fun !== "function") throw new Error("no function")
+    if (typeof times === "undefined") times = 500
+    if (typeof isNow !== "boolean") isNow = false
+    if (typeof times === "boolean" && typeof isNow === "undefined") {
+      times = 500
+      isNow = false
+    }
+    // 声明定时器的变量
+    let setTime
+    return function (...args) {
+      // 首次执行为true且没有定时器在执行的时候立即执行函数
+      isNow && !setTime && fun()
+      // 清除定时器
+      clearTimeout(setTime)
+      setTime = setTimeout(() => {
+        // 清除定时器函数变量的值
+        setTime = null
+        !isNow&&fun()
+      }, times);
+    }
+  }
+  // 绑定点击事件
+  // btn.onclick = fan(click, 800, true)
+  btn.onclick = fan(click, 800, false)
+</script>
+</html>

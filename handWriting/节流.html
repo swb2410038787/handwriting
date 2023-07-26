@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div style="height: 5000px;" id="scr"></div>
+</body>
+<script>
+  function fan(fun, times) {
+    if (typeof fun !== "function") throw new error('no function')
+    if (typeof times === undefined) timse = 500
+    // 声明定时器比变量
+      let setTime 
+    // 上次执行时间
+      let oldTime = 0
+
+    return function (...args) {
+     // 现在时间
+     let newTime = new Date()
+    // 剩余时间= 间隔时间 -（上次执行时间 - 现在时间）
+      let enTime = times - (newTime - oldTime ) 
+      // 储存this
+      let the = this
+      if (enTime <= 0) {
+        // 清除定时器
+        clearTimeout(setTime)
+        // 执行函数
+        fun.apply(the, args)
+        // 清空定时器变量
+        enTime = null
+        // 设置上次执行时间
+        oldTime = new Date()
+      }else if (!setTime) {
+        clearTimeout(setTime)
+        setTime = setTimeout(function () {
+          enTime = null
+          oldTime = new Date()
+          fun.apply(the, args)
+        }, enTime);
+      }
+    }
+  }
+  function scroll() {
+    console.log(1)
+}
+window.onscroll = fan(scroll, 500)
+</script>
+</html>
